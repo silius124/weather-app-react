@@ -19,7 +19,7 @@ export default function Form({
       />
       <div className="w-full flex items-center gap-2 md:w-3/10">
         <button className="bg-cyan-500 rounded w-30 p-2 text-white hover:bg-cyan-800 cursor-pointer duration-200 md:w-5/10 mr-2">
-          Отправить
+          Поиск
         </button>
         <button
           onClick={onClickReset}
