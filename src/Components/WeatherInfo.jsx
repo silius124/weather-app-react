@@ -1,10 +1,10 @@
-export default function WeatherInfo({ link, city, temp, submit, loading }) {
-  if (loading === true) {
+export default function WeatherInfo({ link, city, temp, status }) {
+  if (status === "loading") {
     return (
       <div className="size-10 border-2 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
     );
   } else {
-    if (submit === "submit") {
+    if (status === "submit") {
       return (
         <>
           <img src={link} alt="" />
@@ -12,7 +12,7 @@ export default function WeatherInfo({ link, city, temp, submit, loading }) {
           <div>Температура: {temp}</div>
         </>
       );
-    } else if (submit === "error") {
+    } else if (status === "error") {
       return <div className="text-red-500">Такого города не найдено!</div>;
     }
   }

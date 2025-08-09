@@ -1,45 +1,34 @@
 import { useState } from "react";
 import Form from "../Components/Form";
 import WeatherInfo from "../Components/WeatherInfo";
+import { getWeather } from "../api";
 export default function Home() {
   const [city, setCity] = useState("");
-  const [loading, setLoading] = useState("");
-  const [temperature, setTemperature] = useState("");
-  const [iconWeatherLink, setIconWeatherLink] = useState("");
-  const [isSubmit, setIsSubmit] = useState("");
+  const [info, setInfo] = useState({ temperature: "", iconWeatherLink: "" });
+  const [status, setStatus] = useState("");
   function handleChangeCity(value) {
     setCity(value);
-    setIsSubmit("");
+    setStatus("");
   }
   function handleClickReset() {
     setCity("");
-    setTemperature("");
-    setIconWeatherLink("");
-    setIsSubmit("");
-    setLoading("");
+    setInfo({ temperature: "", iconWeatherLink: "" });
+    setStatus("");
   }
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!city) return;
-    setLoading(true);
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=55338b0800762709f434f07451c777fe&units=metric`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setTemperature(Math.round(data.main.temp));
-        setIconWeatherLink(
-          `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
-        );
-      })
-      .then(() => {
-        setLoading(false);
-        setIsSubmit("submit");
-      })
-      .catch((e) => {
-        console.log(e);
-        setLoading(false);
-        setIsSubmit("error");
+    setStatus("loading");
+    try {
+      const res = await getWeather(city);
+      setInfo({
+        temperature: Math.round(res.main.temp),
+        iconWeatherLink: `http://openweathermap.org/img/wn/${res.weather[0].icon}@2x.png`,
       });
+      setStatus("submit");
+    } catch (e) {
+      console.log(e);
+      setStatus("failed");
+    }
   }
   return (
     <div className="flex justify-center">
@@ -53,11 +42,10 @@ export default function Home() {
         />
         <div className="mb-5 lg:text-3xl lg:flex lg:flex-col lg:items-center">
           <WeatherInfo
-            link={iconWeatherLink}
+            link={info.iconWeatherLink}
             city={city}
-            temp={temperature}
-            submit={isSubmit}
-            loading={loading}
+            temp={info.temperature}
+            status={status}
           />
         </div>
       </div>
