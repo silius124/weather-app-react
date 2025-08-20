@@ -52,7 +52,7 @@
    ```bash
    yarn start
    ```
-4. Открой приложение в браузере: [http://localhost:3000](https://silius124.github.io/weather-app-react/)
+4. Открой приложение в браузере: [WeatherApp React](https://silius124.github.io/weather-app-react/)
 
 ---
 
